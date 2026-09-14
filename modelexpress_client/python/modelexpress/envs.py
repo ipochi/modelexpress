@@ -51,6 +51,8 @@ if TYPE_CHECKING:
     # Auth (client)
     MX_AUTH_TOKEN_PATH: Optional[str]
     MX_AUTH_TOKEN_TTL_SECONDS: Optional[str]
+    AZURE_STORAGE_ACCOUNT_NAME: Optional[str]
+    AZURE_STORAGE_CONNECTION_STRING: Optional[str]
     # Runtime compatibility
     MX_DISABLE_PATCHES: bool
     # Metadata / worker
@@ -253,6 +255,12 @@ environment_variables: dict[str, Callable[[], Any]] = {
     # ── Auth (client) ──────────────────────────────────────────────────────
     "MX_AUTH_TOKEN_PATH": lambda: os.environ.get("MX_AUTH_TOKEN_PATH"),
     "MX_AUTH_TOKEN_TTL_SECONDS": lambda: os.environ.get("MX_AUTH_TOKEN_TTL_SECONDS"),
+    "AZURE_STORAGE_ACCOUNT_NAME": lambda: (
+        os.environ.get("AZURE_STORAGE_ACCOUNT_NAME", "").strip() or None
+    ),
+    "AZURE_STORAGE_CONNECTION_STRING": lambda: (
+        os.environ.get("AZURE_STORAGE_CONNECTION_STRING", "").strip() or None
+    ),
     # ── Runtime compatibility ──────────────────────────────────────────────
     "MX_DISABLE_PATCHES": lambda: os.environ.get("MX_DISABLE_PATCHES", "").strip().lower()
     in _TRUTHY,

@@ -70,6 +70,10 @@ vmm = [
     # 12.4 is the first release exposing CU_MEM_HANDLE_TYPE_FABRIC.
     "cuda-python>=12.4",
 ]
+azure = [
+    "azure-identity",
+    "azure-storage-blob",
+]
 
 [project.urls]
 Homepage = "https://github.com/ai-dynamo/modelexpress"

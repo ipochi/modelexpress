@@ -27,7 +27,7 @@ from modelexpress_rl.inference.checkpoint_store import (
     checkpoint_files_state,
 )
 from modelexpress_rl.object_storage import ObjectStorageType
-from modelexpress_rl.s3 import S3Client
+from modelexpress_rl.object_storage_reader import ObjectStorageReader
 from modelexpress_rl.train import WeightPayloadFormat
 from modelexpress_rl.utils import (
     checksum_factory,
@@ -185,7 +185,7 @@ def _group_tensors_by_shard(
 
 def _download_full_checkpoint(
     *,
-    s3: S3Client,
+    s3: ObjectStorageReader,
     store: LocalCheckpointStore,
     target: Path,
     index_metadata: dict[str, Any],
@@ -317,7 +317,7 @@ def _ensure_full_checkpoint(
     store: LocalCheckpointStore,
     target: Path,
     version: _S3Version,
-    s3: S3Client,
+    s3: ObjectStorageReader,
     protected_versions: set[str],
 ) -> None:
     """Ensure one immutable, source-verified full checkpoint is cached."""
@@ -356,7 +356,7 @@ def bootstrap_s3_checkpoint(
     model_name: str,
     version: _S3Version,
     refit_checkpoint_dir: str | Path,
-    s3: S3Client,
+    s3: ObjectStorageReader,
     refit_checkpoint_max_size_gb: int | None = DEFAULT_REFIT_CHECKPOINT_MAX_SIZE_GB,
 ) -> Path:
     """Download the immutable full root needed by a cold-start replay."""
@@ -412,7 +412,7 @@ class _LocalCheckpoint:
         *,
         model_name: str,
         config: ObjectStorageGeneratorConfig,
-        s3: S3Client,
+        s3: ObjectStorageReader,
     ) -> None:
         self.initial_version = config.initial_base_version_id
         self.seed_checkpoint_path = Path(config.seed_checkpoint_path)
